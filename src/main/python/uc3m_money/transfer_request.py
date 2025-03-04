@@ -18,13 +18,13 @@ class TransferRequest:
         self.__concept = transfer_concept
         self.__transfer_date = transfer_date
         self.__transfer_amount = transfer_amount
-        justnow = datetime.now(timezone.utc)
-        self.__time_stamp = datetime.timestamp(justnow)
+        # justnow = datetime.now(timezone.utc)
+        # self.__time_stamp = datetime.timestamp(justnow)
 
     def __str__(self):
         return "Transfer:" + json.dumps(self.__dict__)
 
-    def to_json(self):
+    def to_json(self): # WARN Temporaly removed self.__time_stamp
         """returns the object information in json format"""
         return {
             "from_iban": self.__from_iban,
@@ -33,7 +33,6 @@ class TransferRequest:
             "transfer_amount": self.__transfer_amount,
             "transfer_concept": self.__concept,
             "transfer_date": self.__transfer_date,
-            "time_stamp": self.__time_stamp,
             "transfer_code": self.transfer_code
         }
     @property
@@ -86,10 +85,10 @@ class TransferRequest:
     def transfer_date( self, value ):
         self.__transfer_date = value
 
-    @property
-    def time_stamp(self):
-        """Read-only property that returns the timestamp of the request"""
-        return self.__time_stamp
+    # @property
+    # def time_stamp(self):
+    #     """Read-only property that returns the timestamp of the request"""
+    #     return self.__time_stamp
 
     @property
     def transfer_code(self):
