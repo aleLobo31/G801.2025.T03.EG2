@@ -103,3 +103,6 @@ class AccountManager:
 
         """If everything has worked return the transfer_code of the transaction"""
         return  transfer_code
+
+    def deposit_into_account(self, input_file):
+        return
