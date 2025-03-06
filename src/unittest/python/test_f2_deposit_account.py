@@ -11,8 +11,9 @@ class TestDepositIntoAccount(unittest.TestCase):
     def setUpClass(cls):
         lines = []
         try:
-            with open("../data/f2_test_case.json", encoding="UTF-8", mode="r") as file:
-                lines = json.load(file)
+            with open("../data/f2_test_case.txt", encoding="UTF-8", mode="r") as file:
+                for line in file:
+                    lines.append(line.strip())
         except FileNotFoundError as e:
             raise AccountManagementException("File not found")
         cls.__all_f2_test_cases = lines
@@ -41,8 +42,6 @@ class TestDepositIntoAccount(unittest.TestCase):
     def test_f2_ko(self):
         for index, input_data in enumerate(self.__all_f2_test_cases):
             test_id = "TC" + str(index + 1)
-            print(test_id)
-            print(input_data)
             if test_id not in ["TC1", "TC62"]:
                 with self.subTest(test_id):
                     with open("../data/tmp_test_data.json", encoding="UTF-8", mode="w") as file:
