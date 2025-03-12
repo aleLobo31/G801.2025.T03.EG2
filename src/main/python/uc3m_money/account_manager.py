@@ -106,6 +106,18 @@ class AccountManager:
         return  transfer_code
 
     def deposit_into_account(self, input_file):
+        try:
+            with open(input_file, encoding="UTF-8", mode="r") as file:
+                file_read = json.load(file)
+                try:
+                    json_file = json.loads(file_read)
+                    if "IBAN" not in json_file or "AMOUNT" not in json_file:
+                        raise AccountManagementException("KO (JsonDecodeError)")
+                except json.JSONDecodeError as e:
+                    raise AccountManagementException("KO (JsonDecodeError)")
+
+        except FileNotFoundError as e:
+            raise AccountManagementException("KO (File not found)")
         return
 
     def calculate_balance(self, iban):
