@@ -1,4 +1,5 @@
 import json
+from freezegun import freeze_time
 import unittest
 
 from uc3m_money import AccountManagementException
@@ -17,6 +18,7 @@ class MyTestCase(unittest.TestCase):
             test_data_transfer_request = []
         cls.__test_data_transfer_request = test_data_transfer_request
 
+    @freeze_time("2024-07-01")
     def test_f1_OK_cases(self):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):

@@ -18,8 +18,8 @@ class TransferRequest:
         self.__concept = transfer_concept
         self.__transfer_date = transfer_date
         self.__transfer_amount = transfer_amount
-        # justnow = datetime.now(timezone.utc)
-        # self.__time_stamp = datetime.timestamp(justnow)
+        justnow = datetime.now(timezone.utc)
+        self.__time_stamp = datetime.timestamp(justnow)
 
     def __str__(self):
         return "Transfer:" + json.dumps(self.__dict__)
@@ -85,10 +85,10 @@ class TransferRequest:
     def transfer_date( self, value ):
         self.__transfer_date = value
 
-    # @property
-    # def time_stamp(self):
-    #     """Read-only property that returns the timestamp of the request"""
-    #     return self.__time_stamp
+    @property
+    def time_stamp(self):
+        """Read-only property that returns the timestamp of the request"""
+        return self.__time_stamp
 
     @property
     def transfer_code(self):
