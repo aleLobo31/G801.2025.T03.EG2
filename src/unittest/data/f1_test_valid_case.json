@@ -1,11 +1,11 @@
 [
   {
-    "id_test": "TC1",
     "from_iban": "ES1021002152980200638904",
     "to_iban": "ES6100491770992410212466",
     "concept": "Clase Spin",
     "transfer_type": "ORDINARY",
     "date_transfer": "1/7/2024",
-    "amount": 10.00
+    "amount": 10.00,
+    "expected_result": "f446d5fda12f7d1a1f72e3feb75decfe"
   }
 ]
