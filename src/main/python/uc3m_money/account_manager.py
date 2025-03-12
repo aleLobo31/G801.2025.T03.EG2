@@ -1,6 +1,7 @@
 """Module """
 import re
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from datetime import datetime
 
@@ -106,3 +107,46 @@ class AccountManager:
 
     def deposit_into_account(self, input_file):
         return
+
+    def calculate_balance(self, iban):
+        """Calcula el saldo final asociado a un iban"""
+        # TO - DO Diseñar algoritmo con comentarios
+        # 0. Initalize local variables
+        balance_result = 0.0 # 1
+        iban_found = False
+
+        # 1. Validate input iban (Se puede dejar así porque ya internamente esta función genera excepciones
+        self.validate_iban(iban) # 2
+
+        # 2. Get transactions in all_transactions.json file
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        try:
+            with open(path_all_transactions, mode="r", encoding="utf-8") as f: #3
+                all_transactions = json.load(f) #4
+        except FileNotFoundError: # 5
+            raise AccountManagementException("Error: all_transactions file not found")
+        except JSONDecodeError: # 6
+            raise AccountManagementException("Error: all_transactions is not a valid JSON file")
+
+        # 3. Iterate through json content and look for input iban
+        for transaction in all_transactions: #7
+            if transaction["IBAN"] == iban: #8
+                iban_found = True #9
+                balance_result = balance_result + float(transaction["amount"])
+
+        # 4. Check IBAN was found or not
+        if not iban_found: # 10
+            raise AccountManagementException("IBAN not found in all_transactions.json") # 11
+
+        # 5. Store result in json file (1 file per iban)
+        path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
+        with open(path_balance_file, mode="w", encoding="utf-8") as f: #12
+            balance_data = { #13
+                "IBAN": iban,
+                "date": str(datetime.now()),
+                "balance": balance_result
+            }
+            json.dump(balance_data, f, indent=2)
+
+        # 6. If everything is correct return true
+        return True
