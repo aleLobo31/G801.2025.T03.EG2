@@ -17,7 +17,7 @@ class TestDepositIntoAccount(unittest.TestCase):
         except FileNotFoundError as e:
             raise AccountManagementException("File not found")
         cls.__all_f2_test_cases = lines
-        print(lines)
+        print(cls.__all_f2_test_cases)
         return True
 
     def get_store_hash(self):
@@ -29,9 +29,12 @@ class TestDepositIntoAccount(unittest.TestCase):
         return file_hash
 
     def test_f2_ok(self):
-        for index, input_data in enumerate(self.__all_f2_test_cases):
-            test_id = "TC" + str(index + 1)
-            if test_id in ["TC1", "TC62"]:
+        index = 1
+        for input_data in self.__all_f2_test_cases:
+            test_id = "TC" + str(index)
+            index += 1
+            if test_id in ["TC1"]:
+                print(test_id + "hola")
                 with self.subTest(test_id):
                     with open("../data/tmp_test_data.json", encoding="UTF-8", mode="w") as file:
                         file.write(json.dumps(input_data))
@@ -40,20 +43,22 @@ class TestDepositIntoAccount(unittest.TestCase):
                 self.assertEqual("sadfdsf", deposit_signature)
 
     def test_f2_ko(self):
-        for index, input_data in enumerate(self.__all_f2_test_cases):
-            test_id = "TC" + str(index + 1)
-            if test_id not in ["TC1", "TC62"]:
+        index = 1
+        for input_data in self.__all_f2_test_cases:
+            test_id = "TC" + str(index)
+            index += 1
+            if test_id not in ["TC1"]:
                 with self.subTest(test_id):
                     with open("../data/tmp_test_data.json", encoding="UTF-8", mode="w") as file:
                         file.write(json.dumps(input_data))
 
-                deposit_hash_ini = self.get_store_hash()
-                with self.assertRaises(AccountManagementException) as result:
-                    am = AccountManager()
-                    deposit_signature = am.deposit_into_account("../data/tmp_test_data.json")
-                self.assertEqual(result.exception.message, "KO (JsonDecodeError)")
-                deposit_hash_end = self.get_store_hash()
-                self.assertEqual(deposit_hash_end, deposit_hash_ini)
+                    deposit_hash_ini = self.get_store_hash()
+                    with self.assertRaises(AccountManagementException) as result:
+                        am = AccountManager()
+                        deposit_signature = am.deposit_into_account("../data/tmp_test_data.json")
+                    self.assertEqual(result.exception.message, "KO (JsonDecodeError)")
+                    deposit_hash_end = self.get_store_hash()
+                    self.assertEqual(deposit_hash_end, deposit_hash_ini)
 
 
 if __name__ == '__main__':
