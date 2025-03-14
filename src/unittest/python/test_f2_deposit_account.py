@@ -46,6 +46,7 @@ class TestDepositIntoAccount(unittest.TestCase):
         index = 1
         for input_data in self.__all_f2_test_cases:
             test_id = "TC" + str(index)
+            print(test_id)
             index += 1
             if test_id not in ["TC1"]:
                 with self.subTest(test_id):
@@ -56,7 +57,13 @@ class TestDepositIntoAccount(unittest.TestCase):
                     with self.assertRaises(AccountManagementException) as result:
                         am = AccountManager()
                         deposit_signature = am.deposit_into_account("../data/tmp_test_data.json")
-                    self.assertEqual(result.exception.message, "KO (JsonDecodeError)")
+                    if test_id in ["TC45", "TC46", "TC67", "TC68", "TC69", "TC70", "TC71", "TC72", "TC73", "TC74", "TC75"]:
+                        self.assertEqual(result.exception.message, "KO (Invalid IBAN)")
+                    elif test_id in ["TC62", "TC63", "TC76", "TC77", "TC78", "TC79", "TC80", "TC81", "TC82", "TC83", "TC84", "TC85", "TC86", "TC87", "TC88", "TC89", "TC90", "TC91", "TC92"]:
+                        self.assertEqual(result.exception.message, "KO(Invalid Amount Format)")
+                    else:
+                        self.assertEqual(result.exception.message, "KO (JsonDecodeError)")
+
                     deposit_hash_end = self.get_store_hash()
                     self.assertEqual(deposit_hash_end, deposit_hash_ini)
 
