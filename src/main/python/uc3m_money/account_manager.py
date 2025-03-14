@@ -118,6 +118,13 @@ class AccountManager:
 
         except FileNotFoundError as e:
             raise AccountManagementException("KO (File not found)")
+
+        iban = json_file["IBAN"]
+        amount = json_file["AMOUNT"]
+
+        if not self.validate_iban(iban):
+            raise AccountManagementException("KO (Invalid IBAN)")
+
         return
 
     def calculate_balance(self, iban):
