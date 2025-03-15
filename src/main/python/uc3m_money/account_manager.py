@@ -51,10 +51,16 @@ class AccountManager:
             raise AccountManagementException("TO IBAN no puede ser igual que FROM IBAN")
 
         """Check whether concept is valid"""
+        if not isinstance(concept, str):
+            raise AccountManagementException("El concepto no es un String")
         concept_len = len(concept)
         regex = r"[A-Za-z]+ [A-Za-z]+"
-        if not isinstance(concept, str) or concept_len < 10 or concept_len > 30 or re.search(concept, regex):
-            return False
+        if concept_len < 10:
+            raise AccountManagementException("El concepto debe tener al menos 10 caracteres")
+        if concept_len > 30:
+            raise AccountManagementException("El concepto debe tener como máximo 30 caracteres")
+        if not re.search(regex, concept):
+            raise AccountManagementException("El concepto debe tener al menos dos cadenas de letras")
 
         """Check whether transfer_type is valid"""
         valid_types = {"ORDINARY", "URGENT", "INMEDIATE"}

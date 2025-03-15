@@ -106,5 +106,77 @@
     "date_transfer": "1/7/2024",
     "amount": 10.00,
     "expected_result": "TO IBAN no puede ser igual que FROM IBAN"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spini",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "b47eaa7ac3446c484b5435e7f928899c"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Manzanass Platanoss Lechugass",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "e8452bff73f32cb6ff9245c7e74b13fd"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "2 Manzanas, 3 Platanos y 1 ajo",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "960069c36521d4f4001e9f21583ab56f"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": 500.23,
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El concepto no es un String"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spi",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El concepto debe tener al menos 10 caracteres"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "2 Manzanas, 3 Platanos y 1 ajos",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El concepto debe tener como máximo 30 caracteres"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "CompraDeMaquinaria",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El concepto debe tener al menos dos cadenas de letras"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "387492 893748",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El concepto debe tener al menos dos cadenas de letras"
   }
 ]

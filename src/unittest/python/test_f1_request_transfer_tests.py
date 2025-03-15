@@ -19,12 +19,15 @@ class MyTestCase(unittest.TestCase):
             test_data_transfer_request = []
         cls.__test_data_transfer_request = test_data_transfer_request
 
+        '''Set a list with valid test cases'''
+        cls.__valid_test_cases = ["TC1", "TC13", "TC14", "TC15", "TC21", "TC22", "TC25", "TC29", "TC30", "TC31"]
+
     @freeze_time("2024-07-01")
     def test_f1_OK_cases(self):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
-            if test_id in ["TC1"]:
+            if test_id in self.__valid_test_cases:
                 with self.subTest(test_id):
                     transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
                                                         input_data["concept"], input_data["transfer_type"],
@@ -50,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
-            if test_id not in ["TC1"]:
+            if test_id not in self.__valid_test_cases:
                 with self.subTest(test_id):
                     with self.assertRaises(AccountManagementException) as amc:
                         transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
