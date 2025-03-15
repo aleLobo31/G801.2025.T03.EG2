@@ -46,8 +46,9 @@ class AccountManager:
         self.validate_iban(from_iban)
 
         """Check whether to_iban is valid"""
-        if not self.validate_iban(to_iban) or from_iban == to_iban:
-            return False
+        self.validate_iban(to_iban)
+        if from_iban == to_iban:
+            raise AccountManagementException("TO IBAN no puede ser igual que FROM IBAN")
 
         """Check whether concept is valid"""
         concept_len = len(concept)
