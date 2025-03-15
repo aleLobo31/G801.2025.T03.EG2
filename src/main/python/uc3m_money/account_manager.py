@@ -84,8 +84,14 @@ class AccountManager:
             raise AccountManagementException("La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'")
 
         """Check whether amount is valid"""
-        if not isinstance(amount, float) or (amount * 100) % 1 >= 0.0001 or amount < 10.00 or amount > 10000.00:
-            return  False
+        if not isinstance(amount, float):
+            raise AccountManagementException("La cantidad debe ser un float")
+        if (amount * 100) % 1 >= 0.1 or (len(str(amount).split(".")[1]) == 1 and amount % 10 != 0):
+            raise AccountManagementException("La cantidad debe tener dos decimales")
+        if amount < 10.00:
+            raise AccountManagementException("La cantidad tiene que ser al menos 10,00€")
+        if amount > 10000.00:
+            raise AccountManagementException("La cantidad no puede superar 10.000,00€")
 
         """Create TransferRequest Object to get the signature of the transaction"""
         tr = TransferRequest(from_iban, transfer_type, to_iban, concept, date, amount)

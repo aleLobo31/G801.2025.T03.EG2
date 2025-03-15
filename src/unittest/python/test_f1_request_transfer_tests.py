@@ -53,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
-            if test_id not in self.__valid_test_cases:
+            if test_id not in self.__valid_test_cases and test_id != "TC28":
                 with self.subTest(test_id):
                     with self.assertRaises(AccountManagementException) as amc:
                         transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],

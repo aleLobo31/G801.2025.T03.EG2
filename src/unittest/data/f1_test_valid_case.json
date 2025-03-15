@@ -250,5 +250,86 @@
     "date_transfer": "1/7/2024",
     "amount": 10.00,
     "expected_result": "La fecha de la transaccion es anterior a su orden"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.01,
+    "expected_result": "bee645fd9d3d09cb7c76b440ec662ed1"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 9999.99,
+    "expected_result": "a7c0307029241588a3132535df0d9fa9"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10000.00,
+    "expected_result": "aed01c66189d786289d9168ed04b5d79"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": "10.00",
+    "expected_result": "La cantidad debe ser un float"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10,
+    "expected_result": "La cantidad debe ser un float"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.123,
+    "expected_result": "La cantidad debe tener dos decimales"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.1,
+    "expected_result": "La cantidad debe tener dos decimales"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 9.99,
+    "expected_result": "La cantidad tiene que ser al menos 10,00€"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount":   10000.01 ,
+    "expected_result": "La cantidad no puede superar 10.000,00€"
   }
 ]
