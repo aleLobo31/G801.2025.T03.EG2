@@ -108,14 +108,12 @@ class AccountManager:
         except FileNotFoundError:
             transfers = []
         except json.JSONDecodeError:
-            print("Decode Error")
-            return False
+            raise AccountManagementException("El JSON provisto no es valido")
 
         """Check if the new transfer already exists in all_transfers.json"""
         for transfer in transfers:
             if transfer["transfer_code"] == transfer_code:
-                print("Repeated Tx")
-                return False
+                raise AccountManagementException("Esta transaccion ya ha sido registrada")
 
         """If the transfer does not exist, append it in all_transfers.json"""
         transfers.append(tr.to_json())
@@ -123,8 +121,7 @@ class AccountManager:
             with open(file_path, encoding="utf-8", mode="w") as f:
                 json.dump(transfers, f, indent=2)
         except FileNotFoundError:
-            print("FileNotFound")
-            return False
+            raise AccountManagementException("El path especificado es incorrecto")
 
         """If everything has worked return the transfer_code of the transaction"""
         return  transfer_code

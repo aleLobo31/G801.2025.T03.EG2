@@ -329,7 +329,16 @@
     "concept": "Clase Spin",
     "transfer_type": "ORDINARY",
     "date_transfer": "1/7/2024",
-    "amount":   10000.01 ,
+    "amount": 10000.01 ,
     "expected_result": "La cantidad no puede superar 10.000,00€"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "Esta transaccion ya ha sido registrada"
   }
 ]

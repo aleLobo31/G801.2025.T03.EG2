@@ -53,7 +53,7 @@ class MyTestCase(unittest.TestCase):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
-            if test_id not in self.__valid_test_cases and test_id != "TC28":
+            if test_id not in self.__valid_test_cases and test_id != "TC28" and test_id != "TC38":
                 with self.subTest(test_id):
                     with self.assertRaises(AccountManagementException) as amc:
                         transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
@@ -73,6 +73,38 @@ class MyTestCase(unittest.TestCase):
                         all_transfers = []
                     self.assertFalse(transfer_found)
 
+    @freeze_time("2024-07-01")
+    def test_T38(self):
+        am = AccountManager()
+        with self.assertRaises(AccountManagementException) as amc:
+            transfer_code = am.transfer_request(self.__test_data_transfer_request[37]["from_iban"],
+                                                self.__test_data_transfer_request[37]["to_iban"],
+                                                self.__test_data_transfer_request[37]["concept"],
+                                                self.__test_data_transfer_request[37]["transfer_type"],
+                                                self.__test_data_transfer_request[37]["date_transfer"],
+                                                self.__test_data_transfer_request[37]["amount"])
+        self.assertEqual(amc.exception.message, self.__test_data_transfer_request[37]["expected_result"])
+
+        file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
+
+        transfer_count = 0
+        dup_transaction = False
+        try:
+            with open(file_path, encoding="UTF-8", mode="r") as f:
+                all_transfers = json.load(f)
+        except FileNotFoundError:
+            raise AccountManagementException("Wrong file path")
+        except json.JSONDecodeError:
+            all_transfers = []
+
+        for transfer_i in all_transfers:
+            for transfer_j in all_transfers:
+                if transfer_i["transfer_code"] == transfer_j["transfer_code"]:
+                    transfer_count += 1
+            if transfer_count > 1:
+                dup_transaction = True
+            transfer_count = 0
+        self.assertFalse(dup_transaction)
 
 
 if __name__ == '__main__':
