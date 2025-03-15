@@ -178,5 +178,41 @@
     "date_transfer": "1/7/2024",
     "amount": 10.00,
     "expected_result": "El concepto debe tener al menos dos cadenas de letras"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "URGENT",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "817b85276eb82d42db2023b4c20c8f7c"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "INMEDIATE",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "f65ce1d71b56972d87d8e3af1b078026"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": 1234,
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El tipo de la transaccion no es un string"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "OTHER",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El tipo de la transaccion es desconocido"
   }
 ]

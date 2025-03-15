@@ -64,8 +64,10 @@ class AccountManager:
 
         """Check whether transfer_type is valid"""
         valid_types = {"ORDINARY", "URGENT", "INMEDIATE"}
-        if not isinstance(transfer_type, str) or transfer_type not in valid_types:
-            return False
+        if not isinstance(transfer_type, str):
+            raise AccountManagementException("El tipo de la transaccion no es un string")
+        if transfer_type not in valid_types:
+            raise AccountManagementException("El tipo de la transaccion es desconocido")
 
         """Check whether date is valid"""
         try:
