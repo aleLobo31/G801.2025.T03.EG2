@@ -214,5 +214,41 @@
     "date_transfer": "1/7/2024",
     "amount": 10.00,
     "expected_result": "El tipo de la transaccion es desconocido"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Compra de Maquinaria",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "cd1270548e1c346bb829a3daccce709b"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": 1234,
+    "amount": 10.00,
+    "expected_result": "La fecha de la transaccion no es un string"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1 Julio 2024",
+    "amount": 10.00,
+    "expected_result": "La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'"
+  },
+  {
+    "from_iban": "ES1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "La fecha de la transaccion es anterior a su orden"
   }
 ]

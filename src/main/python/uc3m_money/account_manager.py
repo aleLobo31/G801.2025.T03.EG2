@@ -71,15 +71,17 @@ class AccountManager:
 
         """Check whether date is valid"""
         try:
-            transfer_date = datetime.strptime(date, "%d/%m/%Y").date()
+            transfer_date = datetime.strptime(date,"%d/%m/%Y").date()
             order_date = datetime.strptime(date, "%d/%m/%Y").date()
+            # order_date = datetime.strptime("30/06/2024", "%d/%m/%Y").date() TC25
+            # order_date = datetime.strptime("02/07/2024", "%d/%m/%Y").date() TC28
             #order_date = datetime.today().date()
-            if transfer_date > order_date:
-                return  False
+            if transfer_date < order_date:
+                raise AccountManagementException("La fecha de la transaccion es anterior a su orden")
         except TypeError:
-            return False
+            raise AccountManagementException("La fecha de la transaccion no es un string")
         except ValueError:
-            return False
+            raise AccountManagementException("La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'")
 
         """Check whether amount is valid"""
         if not isinstance(amount, float) or (amount * 100) % 1 >= 0.0001 or amount < 10.00 or amount > 10000.00:
