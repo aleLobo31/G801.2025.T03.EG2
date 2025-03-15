@@ -7,5 +7,50 @@
     "date_transfer": "1/7/2024",
     "amount": 10.00,
     "expected_result": "e472bf0400466caff6c216fd3a2c0d91"
+  },
+  {
+    "from_iban": 500.23,
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El IBAN no es un String"
+  },
+  {
+    "from_iban": "ES1021002152980200638905",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "IBAN no valido"
+  },
+  {
+    "from_iban": "ES102100215298020063890",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El IBAN debe tener 24 caracteres"
+  },
+  {
+    "from_iban": "ES10210021529802006389047",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El IBAN debe tener 24 caracteres"
+  },
+  {
+    "from_iban": "RR1021002152980200638904",
+    "to_iban": "ES6100491770992410212466",
+    "concept": "Clase Spin",
+    "transfer_type": "ORDINARY",
+    "date_transfer": "1/7/2024",
+    "amount": 10.00,
+    "expected_result": "El IBAN debe empezar por ES"
   }
 ]

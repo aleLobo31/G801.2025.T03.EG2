@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from freezegun import freeze_time
 import unittest
 
@@ -30,8 +31,9 @@ class MyTestCase(unittest.TestCase):
                                                         input_data["date_transfer"], input_data["amount"])
                     self.assertEqual(transfer_code, input_data["expected_result"])
 
+                    file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
                     try:
-                        with open("../data/all_transfers.json", encoding="UTF-8", mode="r") as f:
+                        with open(file_path, encoding="UTF-8", mode="r") as f:
                             all_transfers = json.load(f)
                     except FileNotFoundError:
                         raise AccountManagementException("Wrong file path")
@@ -45,11 +47,30 @@ class MyTestCase(unittest.TestCase):
                     self.assertTrue(transfer_found)
 
     def test_f1_KO_cases(self):
+        am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
             if test_id not in ["TC1"]:
                 with self.subTest(test_id):
-                    pass
+                    with self.assertRaises(AccountManagementException) as amc:
+                        transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
+                                                            input_data["concept"], input_data["transfer_type"],
+                                                            input_data["date_transfer"], input_data["amount"])
+                    self.assertEqual(amc.exception.message, input_data["expected_result"])
+
+                    file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
+
+                    transfer_found = True
+                    try:
+                        with open(file_path, encoding="UTF-8", mode="r") as f:
+                            all_transfers = json.load(f)
+                    except FileNotFoundError:
+                        transfer_found = False
+                    except json.JSONDecodeError:
+                        all_transfers = []
+                    self.assertFalse(transfer_found)
+
+
 
 if __name__ == '__main__':
     unittest.main()

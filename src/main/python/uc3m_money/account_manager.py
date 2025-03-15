@@ -16,7 +16,14 @@ class AccountManager:
     @staticmethod
     def validate_iban(iban: str):
         """Return True if the IBAN received is valid spanish IBAN, or false in other case"""
-        if not isinstance(iban, str) or len(iban) != 24 or iban[:2] != 'ES' or not iban[2:].isdigit(): return False
+        if not isinstance(iban, str):
+            raise AccountManagementException("El IBAN no es un String")
+
+        if len(iban) != 24:
+            raise AccountManagementException("El IBAN debe tener 24 caracteres")
+
+        if iban[:2] != 'ES' or not iban[2:].isdigit():
+            raise AccountManagementException("El IBAN debe empezar por ES")
 
         iban = iban[4:] + iban[:4]
         numeric_iban = ''
@@ -29,14 +36,14 @@ class AccountManager:
 
         if int(numeric_iban) % 97 == 1:
             return True
-        return False
+        else:
+            raise AccountManagementException("IBAN no valido")
 
     def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: int):
         """Return Transfer Code if the request is valid"""
 
         """Check whether from_iban is valid"""
-        if not self.validate_iban(from_iban):
-            return False
+        self.validate_iban(from_iban)
 
         """Check whether to_iban is valid"""
         if not self.validate_iban(to_iban) or from_iban == to_iban:
@@ -77,7 +84,7 @@ class AccountManager:
         transfer_code = tr.transfer_code
 
         """Read the existing transfers if all_transfers.json exists if not create an empty array"""
-        file_path = Path.home() / "PycharmProjects/G801.2025.T03.EG2/src/unittest/data/all_transfers.json"
+        file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
         try:
             with open(file_path, encoding="utf-8", mode="r") as f:
                 transfers = json.load(f)
