@@ -169,8 +169,14 @@ class AccountManager:
         deposit = AccountDeposit(to_iban = iban, deposit_amount = amount)
 
         signature = deposit.deposit_signature
-        if not self.validate_iban(iban):
-            raise AccountManagementException("KO (Invalid IBAN)")
+
+        deposit_json = deposit.to_json()
+
+        try:
+            with open("../data/deposit_values.json", encoding="UTF-8", mode="w") as file:
+                file.write(json.dumps(deposit_json))
+        except FileNotFoundError as e:
+            raise AccountManagementException("KO (File not found)")
 
         return signature
 
