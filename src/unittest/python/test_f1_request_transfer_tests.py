@@ -21,6 +21,7 @@ class MyTestCase(unittest.TestCase):
 
         '''Set a list with valid test cases'''
         cls.__valid_test_cases = ["TC1", "TC13", "TC14", "TC15", "TC21", "TC22", "TC25", "TC29", "TC30", "TC31"]
+        cls.__special_test_cases = ["TC28", "TC38"]
 
     @freeze_time("2024-07-01")
     def test_f1_OK_cases(self):
@@ -31,7 +32,7 @@ class MyTestCase(unittest.TestCase):
                 with self.subTest(test_id):
                     transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
                                                         input_data["concept"], input_data["transfer_type"],
-                                                        input_data["date_transfer"], input_data["amount"])
+                                                        input_data["date_transfer"], str(input_data["amount"]))
                     self.assertEqual(transfer_code, input_data["expected_result"])
 
                     file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
@@ -53,12 +54,16 @@ class MyTestCase(unittest.TestCase):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
-            if test_id not in self.__valid_test_cases and test_id != "TC28" and test_id != "TC38":
+            if test_id not in self.__valid_test_cases and test_id not in self.__special_test_cases:
                 with self.subTest(test_id):
+                    if test_id != "TC32":
+                        cast_amount = str(input_data["amount"])
+                    else:
+                        cast_amount = input_data["amount"]
                     with self.assertRaises(AccountManagementException) as amc:
                         transfer_code = am.transfer_request(input_data["from_iban"], input_data["to_iban"],
                                                             input_data["concept"], input_data["transfer_type"],
-                                                            input_data["date_transfer"], input_data["amount"])
+                                                            input_data["date_transfer"], cast_amount)
                     self.assertEqual(amc.exception.message, input_data["expected_result"])
 
                     file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
@@ -82,7 +87,7 @@ class MyTestCase(unittest.TestCase):
                                                 self.__test_data_transfer_request[37]["concept"],
                                                 self.__test_data_transfer_request[37]["transfer_type"],
                                                 self.__test_data_transfer_request[37]["date_transfer"],
-                                                self.__test_data_transfer_request[37]["amount"])
+                                                str(self.__test_data_transfer_request[37]["amount"]))
         self.assertEqual(amc.exception.message, self.__test_data_transfer_request[37]["expected_result"])
 
         file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"

@@ -39,7 +39,7 @@ class AccountManager:
         else:
             raise AccountManagementException("IBAN no valido")
 
-    def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: int):
+    def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: str):
         """Return Transfer Code if the request is valid"""
 
         """Check whether from_iban is valid"""
@@ -73,9 +73,9 @@ class AccountManager:
         try:
             transfer_date = datetime.strptime(date,"%d/%m/%Y").date()
             order_date = datetime.strptime(date, "%d/%m/%Y").date()
-            # order_date = datetime.strptime("30/06/2024", "%d/%m/%Y").date() TC25
-            # order_date = datetime.strptime("02/07/2024", "%d/%m/%Y").date() TC28
-            #order_date = datetime.today().date()
+            # order_date = datetime.strptime("30/06/2024", "%d/%m/%Y").date() #TC25
+            # order_date = datetime.strptime("02/07/2024", "%d/%m/%Y").date() #TC28
+            # order_date = datetime.today().date()
             if transfer_date < order_date:
                 raise AccountManagementException("La fecha de la transaccion es anterior a su orden")
         except TypeError:
@@ -84,13 +84,21 @@ class AccountManager:
             raise AccountManagementException("La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'")
 
         """Check whether amount is valid"""
-        if not isinstance(amount, float):
-            raise AccountManagementException("La cantidad debe ser un float")
-        if (amount * 100) % 1 >= 0.1 or (len(str(amount).split(".")[1]) == 1 and amount % 10 != 0):
+        try:
+            cast_amount = float(amount)
+            decimal_part = amount.split(".")[1]
+        except ValueError:
+            raise AccountManagementException("La cantidad debe ser un valor numerico decimal")
+        except AttributeError:
+            raise AccountManagementException("La cantidad debe ser un string")
+        except IndexError:
+            raise AccountManagementException("La cantidad debe ser un valor numerico decimal")
+
+        if len(decimal_part) > 2 or (len(decimal_part) == 1 and decimal_part != '0'):
             raise AccountManagementException("La cantidad debe tener dos decimales")
-        if amount < 10.00:
+        if cast_amount < 10.00:
             raise AccountManagementException("La cantidad tiene que ser al menos 10,00€")
-        if amount > 10000.00:
+        if cast_amount > 10000.00:
             raise AccountManagementException("La cantidad no puede superar 10.000,00€")
 
         """Create TransferRequest Object to get the signature of the transaction"""
