@@ -51,7 +51,7 @@ class TestDepositIntoAccount(unittest.TestCase):
                     test_typ = "DEPOSIT"
                     test_iban = "ES9121000418450200051332"
                     test_amount = "EUR 1250.55"
-                    test_time = frozen_time
+                    test_time = datetime.timestamp(frozen_time)
 
                     test_json_string = "{alg:" + test_alg + ",typ:" + test_typ + ",iban:" + \
                                         test_iban + ",amount:" + test_amount + \
