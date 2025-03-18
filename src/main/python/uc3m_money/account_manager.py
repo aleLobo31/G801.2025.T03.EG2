@@ -158,7 +158,9 @@ class AccountManager:
         iban = json_file["IBAN"]
         amount = json_file["AMOUNT"]
 
-        if not self.validate_iban(iban):
+        try:
+            self.validate_iban(iban)
+        except AccountManagementException:
             raise AccountManagementException("KO (Invalid IBAN)")
 
         if not self.validate_amount(amount):
@@ -166,7 +168,7 @@ class AccountManager:
 
         deposit = AccountDeposit(to_iban = iban, deposit_amount = amount)
 
-        signature = deposit.deposit_signature()
+        signature = deposit.deposit_signature
         if not self.validate_iban(iban):
             raise AccountManagementException("KO (Invalid IBAN)")
 
