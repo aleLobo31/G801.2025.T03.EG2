@@ -1,6 +1,8 @@
 import unittest
 import hashlib
 import json
+from freezegun import freeze_time
+from datetime import datetime, timezone
 from pathlib import Path
 
 from uc3m_money import AccountManagementException
@@ -38,9 +40,26 @@ class TestDepositIntoAccount(unittest.TestCase):
                 with self.subTest(test_id):
                     with open("../data/tmp_test_data.json", encoding="UTF-8", mode="w") as file:
                         file.write(json.dumps(input_data))
-                am = AccountManager()
-                deposit_signature = am.deposit_into_account("../data/tmp_test_data.json")
-                self.assertEqual("sadfdsf", deposit_signature)
+
+                frozen_time = datetime.now(timezone.utc)
+
+                with freeze_time(frozen_time):
+                    am = AccountManager()
+                    deposit_signature = am.deposit_into_account("../data/tmp_test_data.json")
+
+                    test_alg = "SHA-256"
+                    test_typ = "DEPOSIT"
+                    test_iban = "ES9121000418450200051332"
+                    test_amount = "EUR 1250.55"
+                    test_time = frozen_time
+
+                    test_json_string = "{alg:" + test_alg + ",typ:" + test_typ + ",iban:" + \
+                                        test_iban + ",amount:" + test_amount + \
+                                        ",deposit_date:" + str(test_time) + "}"
+
+                    test_deposit_signature = hashlib.sha256(test_json_string.encode()).hexdigest()
+
+                self.assertEqual(test_deposit_signature, deposit_signature)
 
     def test_f2_ko(self):
         index = 1
