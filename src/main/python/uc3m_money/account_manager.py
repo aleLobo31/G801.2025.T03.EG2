@@ -7,6 +7,7 @@ from datetime import datetime
 
 from .transfer_request import TransferRequest
 from .account_management_exception import  AccountManagementException
+from .account_deposit import AccountDeposit
 
 class AccountManager:
     """Class for providing the methods for managing the orders"""
@@ -38,6 +39,12 @@ class AccountManager:
             return True
         else:
             raise AccountManagementException("IBAN no valido")
+
+    @staticmethod
+    def validate_amount(amount : str) -> bool:
+        """Return True if the amount follows the correct format, or false in other case"""
+        regex = r"^EUR [1-9]\d{0,3}\.\d{2}$"
+        return bool(re.match(regex, amount))
 
     def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: str):
         """Return Transfer Code if the request is valid"""
@@ -154,7 +161,16 @@ class AccountManager:
         if not self.validate_iban(iban):
             raise AccountManagementException("KO (Invalid IBAN)")
 
-        return
+        if not self.validate_amount(amount):
+            raise AccountManagementException("KO (Invalid Amount Format)")
+
+        deposit = AccountDeposit(to_iban = iban, deposit_amount = amount)
+
+        signature = deposit.deposit_signature()
+        if not self.validate_iban(iban):
+            raise AccountManagementException("KO (Invalid IBAN)")
+
+        return signature
 
     def calculate_balance(self, iban):
         """Calcula el saldo final asociado a un iban"""
