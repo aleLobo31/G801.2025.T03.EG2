@@ -10,8 +10,9 @@ class MyTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Opens JSON'''
+        file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f1_test_valid_case.json"
         try:
-            with open("../data/f1_test_valid_case.json", encoding="UTF-8", mode="r") as f:
+            with open(file_path, encoding="UTF-8", mode="r") as f:
                 test_data_transfer_request = json.load(f)
         except FileNotFoundError:
             raise AccountManagementException("Wrong file path")

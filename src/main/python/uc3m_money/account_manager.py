@@ -173,7 +173,7 @@ class AccountManager:
         deposit_json = deposit.to_json()
 
         try:
-            with open("../data/deposit_values.json", encoding="UTF-8", mode="w") as file:
+            with open(str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/deposit_values.json", encoding="UTF-8", mode="w") as file:
                 file.write(json.dumps(deposit_json))
         except FileNotFoundError as e:
             raise AccountManagementException("KO (File not found)")
