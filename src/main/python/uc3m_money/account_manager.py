@@ -110,7 +110,7 @@ class AccountManager:
 
         """Create TransferRequest Object to get the signature of the transaction"""
         tr = TransferRequest(from_iban, transfer_type, to_iban, concept, date, amount)
-        print(tr)
+        # print(tr)
 
         """Get Transfer Code associated with this transaction"""
         transfer_code = tr.transfer_code

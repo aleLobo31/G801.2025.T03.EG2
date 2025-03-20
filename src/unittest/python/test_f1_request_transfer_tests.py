@@ -1,4 +1,6 @@
+import os
 import json
+from json import JSONDecodeError
 from pathlib import Path
 from freezegun import freeze_time
 import unittest
@@ -10,6 +12,10 @@ class MyTestCase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         '''Opens JSON'''
+        all_transfers_path = Path.home() / "PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
+        if all_transfers_path.exists():
+            os.remove(all_transfers_path)  # Delete the file if it exists
+
         file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f1_test_valid_case.json"
         try:
             with open(file_path, encoding="UTF-8", mode="r") as f:
@@ -25,7 +31,7 @@ class MyTestCase(unittest.TestCase):
         cls.__special_test_cases = ["TC28", "TC38"]
 
     @freeze_time("2024-07-01")
-    def test_f1_OK_cases(self):
+    def test_1_f1_OK_cases(self):
         am = AccountManager()
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
@@ -51,8 +57,18 @@ class MyTestCase(unittest.TestCase):
                             transfer_found = True
                     self.assertTrue(transfer_found)
 
-    def test_f1_KO_cases(self):
+    def test_2_f1_KO_cases(self):
         am = AccountManager()
+
+        all_transfers_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
+        try:
+            with open(all_transfers_path, mode="r", encoding="utf-8") as i:
+                init_file = json.load(i)
+        except FileNotFoundError:
+            init_file = []
+        except JSONDecodeError:
+            init_file = []
+
         for index, input_data in enumerate(self.__test_data_transfer_request):
             test_id = "TC"+ str(index + 1)
             if test_id not in self.__valid_test_cases and test_id not in self.__special_test_cases:
@@ -67,20 +83,19 @@ class MyTestCase(unittest.TestCase):
                                                             input_data["date_transfer"], cast_amount)
                     self.assertEqual(amc.exception.message, input_data["expected_result"])
 
-                    file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
 
-                    transfer_found = True
                     try:
-                        with open(file_path, encoding="UTF-8", mode="r") as f:
-                            all_transfers = json.load(f)
+                        with open(all_transfers_path, mode="r", encoding="utf-8") as f:
+                            final_file = json.load(f)
                     except FileNotFoundError:
-                        transfer_found = False
-                    except json.JSONDecodeError:
-                        all_transfers = []
-                    self.assertFalse(transfer_found)
+                        final_file = []
+                    except JSONDecodeError:
+                        init_file = []
+
+                    self.assertEqual(init_file, final_file)
 
     @freeze_time("2024-07-01")
-    def test_T38(self):
+    def test_3_f1_T38_case(self):
         am = AccountManager()
         with self.assertRaises(AccountManagementException) as amc:
             transfer_code = am.transfer_request(self.__test_data_transfer_request[37]["from_iban"],
