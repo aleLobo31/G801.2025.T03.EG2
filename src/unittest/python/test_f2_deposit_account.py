@@ -91,6 +91,12 @@ class TestDepositIntoAccount(unittest.TestCase):
                     deposit_hash_end = self.get_store_hash()
                     self.assertEqual(deposit_hash_end, deposit_hash_ini)
 
+    def test_f2_file_not_found(self):
+        with self.assertRaises(AccountManagementException) as result:
+            am = AccountManager()
+            deposit_signature = am.deposit_into_account("xxxxxxxxxxxxx")
+
+            self.assertEqual(result.exception.message, "KO (File not found)")
 
 if __name__ == '__main__':
     unittest.main()
