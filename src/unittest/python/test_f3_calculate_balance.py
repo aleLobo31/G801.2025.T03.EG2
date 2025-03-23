@@ -3,14 +3,10 @@ from pathlib import Path
 import json
 from json import JSONDecodeError
 
-from uc3m_money.account_manager import AccountManager
 from uc3m_money import AccountManager
-
+from uc3m_money import  AccountManagementException
 
 class MyTestCase(unittest.TestCase):
-    def test_something(self):
-        self.assertEqual(True, False)  # add assertion here
-
     @classmethod
     def setUpClass(self):
         pass
@@ -37,6 +33,23 @@ class MyTestCase(unittest.TestCase):
         except KeyError:
             self.assertFalse(True)
 
+    def test_f3_tc2_ko(self):
+        iban = "ES8658342044541216872704"
+        am = AccountManager()
+        with self.assertRaises(AccountManagementException) as amc:
+            am.calculate_balance(iban)
+        self.assertEqual(amc.exception.message, "Error: all_transactions file not found")
+
+        path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
+        file_not_found = False
+        try:
+            with open(path_balance_file, mode="r", encoding="utf-8") as f:
+                balance_iban = json.load(f)
+        except FileNotFoundError:
+                file_not_found = True
+        except JSONDecodeError:
+            balance_iban = {}
+        self.assertTrue(file_not_found)
 
 if __name__ == '__main__':
     unittest.main()
