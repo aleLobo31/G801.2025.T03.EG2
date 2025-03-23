@@ -51,5 +51,23 @@ class MyTestCase(unittest.TestCase):
             balance_iban = {}
         self.assertTrue(file_not_found)
 
+    def test_f3_tc3_ko(self):
+        iban = "ES8658342044541216872704"
+        am = AccountManager()
+        with self.assertRaises(AccountManagementException) as amc:
+            am.calculate_balance(iban)
+        self.assertEqual(amc.exception.message, "Error: all_transactions is not a valid JSON file")
+
+        path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
+        file_not_found = False
+        try:
+            with open(path_balance_file, mode="r", encoding="utf-8") as f:
+                balance_iban = json.load(f)
+        except FileNotFoundError:
+                file_not_found = True
+        except JSONDecodeError:
+            balance_iban = {}
+        self.assertTrue(file_not_found)
+
 if __name__ == '__main__':
     unittest.main()
