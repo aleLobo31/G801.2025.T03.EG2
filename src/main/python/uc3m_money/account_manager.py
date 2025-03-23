@@ -190,9 +190,9 @@ class AccountManager:
         self.validate_iban(iban) # 2
 
         # 2. Get transactions in all_transactions.json file
-        # path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
         # TC2 path_all_transactions = str(Path.home()) + "/hdkfajfdkl"
-        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC3.json"
+        # TC3 path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC3.json"
         try:
             with open(path_all_transactions, mode="r", encoding="utf-8") as f: #3
                 all_transactions = json.load(f) #4
