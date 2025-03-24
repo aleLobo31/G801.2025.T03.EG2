@@ -14,7 +14,7 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc1_ok(self):
         iban = "ES8658342044541216872704"
         am = AccountManager()
-        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC1.json"
 
         self.assertTrue(am.calculate_balance(iban, path_all_transactions))
 
@@ -36,7 +36,7 @@ class MyTestCase(unittest.TestCase):
             self.assertFalse(True)
 
     def test_f3_tc2_ko(self):
-        iban = "ES8658342044541216872704"
+        iban = "ES6211110783482828975098"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/no_transactions.yeison"
 
@@ -56,9 +56,9 @@ class MyTestCase(unittest.TestCase):
         self.assertTrue(file_not_found)
 
     def test_f3_tc3_ko(self):
-        iban = "ES8658342044541216872704"
+        iban = "ES6211110783482828975098"
         am = AccountManager()
-        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC3.json"
 
         with self.assertRaises(AccountManagementException) as amc:
             am.calculate_balance(iban, path_all_transactions)
@@ -78,7 +78,7 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc4_ko(self):
         iban = "ES5520386795111966954674"
         am = AccountManager()
-        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC4.json"
 
         with self.assertRaises(AccountManagementException) as amc:
             am.calculate_balance(iban, path_all_transactions)
