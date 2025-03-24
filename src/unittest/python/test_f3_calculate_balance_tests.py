@@ -14,7 +14,9 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc1_ok(self):
         iban = "ES8658342044541216872704"
         am = AccountManager()
-        self.assertTrue(am.calculate_balance(iban))
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+
+        self.assertTrue(am.calculate_balance(iban, path_all_transactions))
 
         path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
         try:
@@ -36,8 +38,10 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc2_ko(self):
         iban = "ES8658342044541216872704"
         am = AccountManager()
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/no_transactions.yeison"
+
         with self.assertRaises(AccountManagementException) as amc:
-            am.calculate_balance(iban)
+            am.calculate_balance(iban, path_all_transactions)
         self.assertEqual(amc.exception.message, "Error: all_transactions file not found")
 
         path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
@@ -54,8 +58,10 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc3_ko(self):
         iban = "ES8658342044541216872704"
         am = AccountManager()
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+
         with self.assertRaises(AccountManagementException) as amc:
-            am.calculate_balance(iban)
+            am.calculate_balance(iban, path_all_transactions)
         self.assertEqual(amc.exception.message, "Error: all_transactions is not a valid JSON file")
 
         path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"
@@ -72,8 +78,10 @@ class MyTestCase(unittest.TestCase):
     def test_f3_tc4_ko(self):
         iban = "ES5520386795111966954674"
         am = AccountManager()
+        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+
         with self.assertRaises(AccountManagementException) as amc:
-            am.calculate_balance(iban)
+            am.calculate_balance(iban, path_all_transactions)
         self.assertEqual(amc.exception.message, "IBAN not found in all_transactions.json")
 
         path_balance_file = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/balance" + iban + ".json"

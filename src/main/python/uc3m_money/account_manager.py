@@ -180,7 +180,7 @@ class AccountManager:
 
         return signature
 
-    def calculate_balance(self, iban):
+    def calculate_balance(self, iban, path_all_transactions):
         """Calcula el saldo final asociado a un iban"""
         # 0. Initalize local variables
         balance_result = 0.0 # 1
@@ -190,7 +190,7 @@ class AccountManager:
         self.validate_iban(iban) # 2
 
         # 2. Get transactions in all_transactions.json file
-        path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
+        #path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transactions.json"
         # TC2 path_all_transactions = str(Path.home()) + "/hdkfajfdkl"
         # TC3 path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC3.json"
         try:
