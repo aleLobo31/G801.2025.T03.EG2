@@ -10,10 +10,11 @@ from uc3m_money import  AccountManagementException
 class MyTestCase(unittest.TestCase):
     """Unittest Class"""
     @classmethod
-    def setUpClass(self):
+    def setUpClass(cls):
         pass
 
     def test_f3_tc1_ok(self):
+        """PATH 1_2_4_6_7_8_9_11_12_13_F AND LOOP CASE 2"""
         iban = "ES8658342044541216872704"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC1.json"
@@ -29,15 +30,15 @@ class MyTestCase(unittest.TestCase):
         except JSONDecodeError:
             balance_iban = {}
 
-        # TO - DO Hacer más limpio el código de comprobación de las keys.
         try:
-            v1 = balance_iban["IBAN"]
-            v2 = balance_iban["date"]
-            v3 = balance_iban["balance"]
+            self.assertIn("IBAN", balance_iban)
+            self.assertIn("date", balance_iban)
+            self.assertIn("balance", balance_iban)
         except KeyError:
-            self.assertFalse(True)
+            self.fail()
 
     def test_f3_tc2_ko(self):
+        """PATH 1_2_3_F"""
         iban = "ES6211110783482828975098"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/no_transactions.yeison"
@@ -50,14 +51,15 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
-                file_not_found = True
+            file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
     def test_f3_tc3_ko(self):
+        """PATH 1_2_4_5_F"""
         iban = "ES6211110783482828975098"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC3.json"
@@ -70,14 +72,15 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
-                file_not_found = True
+            file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
     def test_f3_tc4_ko(self):
+        """PATH 1_2_4_6_7_9_10_F AND LOOP CASE 3"""
         iban = "ES5520386795111966954674"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC4.json"
@@ -90,14 +93,15 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
-                file_not_found = True
+            file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
     def test_f3_tc5_ko(self):
+        """PATH 1_2_4_6_9_10_F AND LOOP CASE 1"""
         iban = "ES5520386795111966954674"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC5.json"
@@ -111,14 +115,15 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
             file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
     def test_f3_tc6_ko(self):
+        """PATH 1_2_4_6_7_9_10_F AND LOOP CASE 4"""
         iban = "ES5520386795111966954674"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC6.json"
@@ -132,14 +137,15 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
             file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
     def test_f3_tc7_ko(self):
+        """PATH 1_2_4_6_7_9_10_F AND LOOP CASE 5"""
         iban = "ES5520386795111966954674"
         am = AccountManager()
         path_all_transactions = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/f3_TC7.json"
@@ -153,11 +159,11 @@ class MyTestCase(unittest.TestCase):
         file_not_found = False
         try:
             with open(path_balance_file, mode="r", encoding="utf-8") as f:
-                balance_iban = json.load(f)
+                json.load(f)
         except FileNotFoundError:
             file_not_found = True
         except JSONDecodeError:
-            balance_iban = {}
+            pass
         self.assertTrue(file_not_found)
 
 if __name__ == '__main__':
