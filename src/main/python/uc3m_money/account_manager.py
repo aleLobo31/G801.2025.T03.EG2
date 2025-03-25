@@ -16,7 +16,8 @@ class AccountManager:
 
     @staticmethod
     def validate_iban(iban: str):
-        """Return True if the IBAN received is valid spanish IBAN, or false in other case"""
+        """Return True if the IBAN received is valid spanish IBAN, or raises Exception in other case"""
+
         if not isinstance(iban, str):
             raise AccountManagementException("El IBAN no es un String")
 
@@ -37,27 +38,11 @@ class AccountManager:
 
         if int(numeric_iban) % 97 == 1:
             return True
-        else:
-            raise AccountManagementException("IBAN no valido")
-
+        raise AccountManagementException("IBAN no valido")
     @staticmethod
-    def validate_amount(amount : str) -> bool:
-        """Return True if the amount follows the correct format, or false in other case"""
-        regex = r"^EUR [1-9]\d{0,3}\.\d{2}$"
-        return bool(re.match(regex, amount))
+    def validate_concept(concept: str):
+        """Return True if the Concept received is valid, or raises Exception in other case"""
 
-    def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: str):
-        """Return Transfer Code if the request is valid"""
-
-        """Check whether from_iban is valid"""
-        self.validate_iban(from_iban)
-
-        """Check whether to_iban is valid"""
-        self.validate_iban(to_iban)
-        if from_iban == to_iban:
-            raise AccountManagementException("TO IBAN no puede ser igual que FROM IBAN")
-
-        """Check whether concept is valid"""
         if not isinstance(concept, str):
             raise AccountManagementException("El concepto no es un String")
         concept_len = len(concept)
@@ -68,38 +53,44 @@ class AccountManager:
             raise AccountManagementException("El concepto debe tener como máximo 30 caracteres")
         if not re.search(regex, concept):
             raise AccountManagementException("El concepto debe tener al menos dos cadenas de letras")
-
-        """Check whether transfer_type is valid"""
+        return True
+    @staticmethod
+    def validate_transfer_type(transfer_type: str):
+        """Return True if the Transfer Type received is valid, or raises Exception in other case"""
         valid_types = {"ORDINARY", "URGENT", "INMEDIATE"}
         if not isinstance(transfer_type, str):
             raise AccountManagementException("El tipo de la transaccion no es un string")
         if transfer_type not in valid_types:
             raise AccountManagementException("El tipo de la transaccion es desconocido")
-
-        """Check whether date is valid"""
+        return True
+    @staticmethod
+    def validate_date(date: str):
+        """Return True if the Date received is valid, or raises Exception in other case"""
         try:
-            transfer_date = datetime.strptime(date,"%d/%m/%Y").date()
+            transfer_date = datetime.strptime(date, "%d/%m/%Y").date()
             order_date = datetime.strptime(date, "%d/%m/%Y").date()
             # order_date = datetime.strptime("30/06/2024", "%d/%m/%Y").date() #TC25
             # order_date = datetime.strptime("02/07/2024", "%d/%m/%Y").date() #TC28
             # order_date = datetime.today().date()
             if transfer_date < order_date:
                 raise AccountManagementException("La fecha de la transaccion es anterior a su orden")
-        except TypeError:
-            raise AccountManagementException("La fecha de la transaccion no es un string")
-        except ValueError:
-            raise AccountManagementException("La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'")
-
-        """Check whether amount is valid"""
+        except TypeError as e:
+            raise AccountManagementException("La fecha de la transaccion no es un string") from e
+        except ValueError as e:
+            raise AccountManagementException("La fecha de la transaccion no sigue el formato 'DD/MM/YYYY'") from e
+        return True
+    @staticmethod
+    def validate_transfer_amount(amount: str):
+        """Return True if the amount received is valid, or raises Exception in other case"""
         try:
             cast_amount = float(amount)
             decimal_part = amount.split(".")[1]
-        except ValueError:
-            raise AccountManagementException("La cantidad debe ser un valor numerico decimal")
-        except AttributeError:
-            raise AccountManagementException("La cantidad debe ser un string")
-        except IndexError:
-            raise AccountManagementException("La cantidad debe ser un valor numerico decimal")
+        except ValueError as e:
+            raise AccountManagementException("La cantidad debe ser un valor numerico decimal") from e
+        except AttributeError as e:
+            raise AccountManagementException("La cantidad debe ser un string") from e
+        except IndexError as e:
+            raise AccountManagementException("La cantidad debe ser un valor numerico decimal") from e
 
         if len(decimal_part) > 2 or (len(decimal_part) == 1 and decimal_part != '0'):
             raise AccountManagementException("La cantidad debe tener dos decimales")
@@ -107,41 +98,70 @@ class AccountManager:
             raise AccountManagementException("La cantidad tiene que ser al menos 10,00€")
         if cast_amount > 10000.00:
             raise AccountManagementException("La cantidad no puede superar 10.000,00€")
+        return True
+    @staticmethod
+    def validate_amount(amount : str) -> bool:
+        """Return True if the amount follows the correct format, or false in other case"""
+        regex = r"^EUR [1-9]\d{0,3}\.\d{2}$"
+        return bool(re.match(regex, amount))
 
-        """Create TransferRequest Object to get the signature of the transaction"""
-        tr = TransferRequest(from_iban, transfer_type, to_iban, concept, date, amount)
-        # print(tr)
+    def transfer_request(self, from_iban: str, to_iban: str, concept: str, transfer_type: str, date: str, amount: str):
+        """Return Transfer Code if the request is valid"""
 
-        """Get Transfer Code associated with this transaction"""
+        # Check whether from_iban is valid
+        self.validate_iban(from_iban)
+
+        # Check whether to_iban is valid
+        self.validate_iban(to_iban)
+        if from_iban == to_iban:
+            raise AccountManagementException("TO IBAN no puede ser igual que FROM IBAN")
+
+        # Check whether concept is valid
+        self.validate_concept(concept)
+
+        # Check whether transfer_type is valid
+        self.validate_transfer_type(transfer_type)
+
+        # Check whether date is valid
+        self.validate_date(date)
+
+        # Check whether amount is valid
+        self.validate_transfer_amount(amount)
+
+        # Create TransferRequest Object to get the signature of the transaction
+        tr = TransferRequest(from_iban, transfer_type, to_iban, concept, date, float(amount))
+
+        # Get Transfer Code associated with this transaction
         transfer_code = tr.transfer_code
 
-        """Read the existing transfers if all_transfers.json exists if not create an empty array"""
+        # Read the existing transfers if all_transfers.json exists if not create an empty array
         file_path = str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/JsonFiles/all_transfers.json"
         try:
             with open(file_path, encoding="utf-8", mode="r") as f:
                 transfers = json.load(f)
         except FileNotFoundError:
             transfers = []
-        except json.JSONDecodeError:
-            raise AccountManagementException("El JSON provisto no es valido")
+        except json.JSONDecodeError as e:
+            raise AccountManagementException("El JSON provisto no es valido") from e
 
-        """Check if the new transfer already exists in all_transfers.json"""
+        # Check if the new transfer already exists in all_transfers.json
         for transfer in transfers:
             if transfer["transfer_code"] == transfer_code:
                 raise AccountManagementException("Esta transaccion ya ha sido registrada")
 
-        """If the transfer does not exist, append it in all_transfers.json"""
+        # If the transfer does not exist, append it in all_transfers.json
         transfers.append(tr.to_json())
         try:
             with open(file_path, encoding="utf-8", mode="w") as f:
                 json.dump(transfers, f, indent=2)
-        except FileNotFoundError:
-            raise AccountManagementException("El path especificado es incorrecto")
+        except FileNotFoundError as e:
+            raise AccountManagementException("El path especificado es incorrecto") from e
 
-        """If everything has worked return the transfer_code of the transaction"""
+        # If everything has worked return the transfer_code of the transaction
         return  transfer_code
 
     def deposit_into_account(self, input_file):
+        '''Opens a file with a deposit and parses IBAN and AMOUNT'''
         try:
             with open(input_file, encoding="UTF-8", mode="r") as file:
                 file_read = json.load(file)
@@ -150,18 +170,18 @@ class AccountManager:
                     if "IBAN" not in json_file or "AMOUNT" not in json_file:
                         raise AccountManagementException("KO (JsonDecodeError)")
                 except json.JSONDecodeError as e:
-                    raise AccountManagementException("KO (JsonDecodeError)")
+                    raise AccountManagementException("KO (JsonDecodeError)") from e
 
         except FileNotFoundError as e:
-            raise AccountManagementException("KO (File not found)")
+            raise AccountManagementException("KO (File not found)") from e
 
         iban = json_file["IBAN"]
         amount = json_file["AMOUNT"]
 
         try:
             self.validate_iban(iban)
-        except AccountManagementException:
-            raise AccountManagementException("KO (Invalid IBAN)")
+        except AccountManagementException as e:
+            raise AccountManagementException("KO (Invalid IBAN)") from e
 
         if not self.validate_amount(amount):
             raise AccountManagementException("KO (Invalid Amount Format)")
@@ -173,15 +193,17 @@ class AccountManager:
         deposit_json = deposit.to_json()
 
         try:
-            with open(str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/deposit_values.json", encoding="UTF-8", mode="w") as file:
+            with open(str(Path.home()) + "/PycharmProjects/G801.2025.T03.EG2/src/unittest/data/deposit_values.json",
+                      encoding="UTF-8", mode="w") as file:
                 file.write(json.dumps(deposit_json))
         except FileNotFoundError as e:
-            raise AccountManagementException("KO (File not found)")
+            raise AccountManagementException("KO (File not found)") from e
 
         return signature
 
     def calculate_balance(self, iban, path_all_transactions):
         """Calcula el saldo final asociado a un iban"""
+
         # 0. Initalize local variables
         balance_result = 0.0 # 1
         iban_found = False
@@ -196,10 +218,10 @@ class AccountManager:
         try:
             with open(path_all_transactions, mode="r", encoding="utf-8") as f: #3
                 all_transactions = json.load(f) #4
-        except FileNotFoundError: # 5
-            raise AccountManagementException("Error: all_transactions file not found")
-        except JSONDecodeError: # 6
-            raise AccountManagementException("Error: all_transactions is not a valid JSON file")
+        except FileNotFoundError as e: # 5
+            raise AccountManagementException("Error: all_transactions file not found") from e
+        except JSONDecodeError as e: # 6
+            raise AccountManagementException("Error: all_transactions is not a valid JSON file") from e
 
         # 3. Iterate through json content and look for input iban
         for transaction in all_transactions: #7

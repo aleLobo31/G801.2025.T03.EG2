@@ -1,3 +1,4 @@
+"""ACCOUNT DEPOSIT TESTS"""
 import unittest
 import hashlib
 import json
@@ -9,6 +10,7 @@ from uc3m_money import AccountManagementException
 from uc3m_money.account_manager import AccountManager
 
 class TestDepositIntoAccount(unittest.TestCase):
+    """Unittest Class"""
     @classmethod
     def setUpClass(cls):
         lines = []

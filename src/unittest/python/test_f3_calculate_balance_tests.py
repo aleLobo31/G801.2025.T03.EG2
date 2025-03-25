@@ -1,3 +1,4 @@
+"""CALCULATE BALANCE TESTS"""
 import unittest
 from pathlib import Path
 import json
@@ -7,6 +8,7 @@ from uc3m_money import AccountManager
 from uc3m_money import  AccountManagementException
 
 class MyTestCase(unittest.TestCase):
+    """Unittest Class"""
     @classmethod
     def setUpClass(self):
         pass
