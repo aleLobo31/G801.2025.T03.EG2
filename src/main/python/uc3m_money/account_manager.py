@@ -203,6 +203,8 @@ class AccountManager:
 
         # 3. Iterate through json content and look for input iban
         for transaction in all_transactions: #7
+            if "IBAN" not in transaction or "amount" not in transaction:
+                continue
             if transaction["IBAN"] == iban: #8
                 iban_found = True #9
                 balance_result = balance_result + float(transaction["amount"])
