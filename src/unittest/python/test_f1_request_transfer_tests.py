@@ -6,8 +6,8 @@ from pathlib import Path
 import unittest
 from freezegun import freeze_time
 
-from uc3m_money import AccountManagementException
-from uc3m_money.account_manager import AccountManager
+from uc3m_money import AccountManagementException #pylint: disable=import-error
+from uc3m_money.account_manager import AccountManager #pylint: disable=import-error
 
 class MyTestCase(unittest.TestCase):
     """Unittest Class"""

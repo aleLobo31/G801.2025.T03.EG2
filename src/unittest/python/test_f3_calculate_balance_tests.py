@@ -4,8 +4,8 @@ from pathlib import Path
 import json
 from json import JSONDecodeError
 
-from uc3m_money import AccountManager
-from uc3m_money import  AccountManagementException
+from uc3m_money import AccountManager #pylint: disable=import-error
+from uc3m_money import  AccountManagementException #pylint: disable=import-error
 
 class MyTestCase(unittest.TestCase):
     """Unittest Class"""

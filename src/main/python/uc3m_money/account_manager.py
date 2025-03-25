@@ -5,9 +5,9 @@ from json import JSONDecodeError
 from pathlib import Path
 from datetime import datetime
 
-from .transfer_request import TransferRequest
-from .account_management_exception import  AccountManagementException
-from .account_deposit import AccountDeposit
+from uc3m_money.transfer_request import TransferRequest #pylint: disable=import-error
+from uc3m_money.account_management_exception import  AccountManagementException #pylint: disable=import-error
+from uc3m_money.account_deposit import AccountDeposit #pylint: disable=import-error
 
 class AccountManager:
     """Class for providing the methods for managing the orders"""

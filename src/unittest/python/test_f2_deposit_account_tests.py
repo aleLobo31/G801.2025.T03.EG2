@@ -6,8 +6,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from freezegun import freeze_time
 
-from uc3m_money import AccountManagementException
-from uc3m_money.account_manager import AccountManager
+from uc3m_money import AccountManagementException #pylint: disable=import-error
+from uc3m_money.account_manager import AccountManager #pylint: disable=import-error
 
 class TestDepositIntoAccount(unittest.TestCase):
     """Unittest Class"""
