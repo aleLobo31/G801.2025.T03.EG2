@@ -1,0 +1,9 @@
+Name                                         Stmts   Miss Branch BrPart  Cover
+------------------------------------------------------------------------------
+uc3m_money/__init__.py                           4      0      0      0   100%
+uc3m_money/account_deposit.py                   35      6      0      0    83%
+uc3m_money/account_management_exception.py      10      1      0      0    90%
+uc3m_money/account_manager.py                  165      9     50      1    95%
+uc3m_money/transfer_request.py                  59     13      0      0    78%
+------------------------------------------------------------------------------
+TOTAL                                          273     29     50      1    91%
